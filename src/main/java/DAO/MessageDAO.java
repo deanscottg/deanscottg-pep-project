@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class MessageDAO {
     public Message getMessageById(int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "SELECT * FROM Message WHERE id =?";
+            String sql = "SELECT * FROM Message WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -39,7 +40,7 @@ public class MessageDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Message message = new Message (resultSet.getInt("posted_by"),
+                Message message = new Message (resultSet.getInt("message_id"),resultSet.getInt("posted_by"),
                 resultSet.getString("message_text"),
                 resultSet.getLong("time_posted_epoch"));
                 messages.add(message);
@@ -57,13 +58,19 @@ public class MessageDAO {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO Message (posted_by, message_text, time_posted_epoch) VALUES(?,?,?);";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1,message.getPosted_by());
             preparedStatement.setString(2, message.getMessage_text());
             preparedStatement.setLong(3, message.getTime_posted_epoch());
 
             preparedStatement.executeUpdate();
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
+                if(pkeyResultSet.next()){
+                    int generated_message_id = pkeyResultSet.getInt("message_id");
+                   return new Message(generated_message_id, message.getPosted_by(),message.getMessage_text(),message.getTime_posted_epoch());
+
+                }
             return message;
         } catch(SQLException e){
             System.out.println(e.getMessage());

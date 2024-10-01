@@ -15,7 +15,18 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        Account addedAccount = accountDAO.insertAccount(account);
-        return addedAccount;
+        if(account.username == null || account.password.length() < 4 || account.username.length() == 0){
+            return null;
+        }
+        else {
+            Account addedAccount = accountDAO.insertAccount(account);
+            return addedAccount;
+        }
+        // if(account.username != null && account.password.length() >= 4){
+        //     Account addedAccount = accountDAO.insertAccount(account);
+        // return addedAccount;
+        // }
+        // else return null;
+        
     }
 }

@@ -35,14 +35,14 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::postAccountHandler);
-        app.post("/login", this::exampleHandler);
+        app.post("/login", this::postVerifyAccountHandler);
         app.post("/messages", this::postMessageHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
-        app.delete("/messages/{message_id}", this::exampleHandler);
+        // app.delete("/messages/{message_id}", this::exampleHandler);
         app.patch("/messages/{message_id}", this::updateMessageHandler);
-        app.get("/accounts/{account_id}/messages", this::exampleHandler);
-        app.start(8080);
+        // app.get("/accounts/{account_id}/messages", this::exampleHandler);
+        // app.start(8080);
 
 
         return app;
@@ -57,10 +57,22 @@ public class SocialMediaController {
         Account account = mapper.readValue(context.body(), Account.class);
         Account addedAccount = accountService.addAccount(account);
         if(addedAccount != null){
-            context.json(mapper.writeValueAsString(addedAccount));
+            context.status(200).json(mapper.writeValueAsString(addedAccount));
         }
         else{
             context.status(400);
+        }
+        
+    }
+    private void postVerifyAccountHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account addedAccount = accountService.addAccount(account);
+        if(addedAccount != null){
+            context.status(200).json(mapper.writeValueAsString(addedAccount));
+        }
+        else{
+            context.status(401);
         }
         
     }
@@ -70,7 +82,7 @@ public class SocialMediaController {
         Message message = mapper.readValue(context.body(), Message.class);
         Message persistedMessage = messageService.addMessage(message);
             if(persistedMessage!= null){
-                context.json(mapper.writeValueAsString(persistedMessage));
+                context.status(200).json(mapper.writeValueAsString(persistedMessage));
             } else {
                 context.status(400);
             }
@@ -78,11 +90,11 @@ public class SocialMediaController {
 
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getAllMessages();
-        context.json(messages);
+        context.status(200).json(messages);
     }
 
     private void getMessageByIdHandler(Context context){
-        context.json(messageService.getMessageById(context.pathParam("id")));
+        context.status(200).json(messageService.getMessageById(Integer.parseInt(context.pathParam("message_id"))));
     }
 
     private void updateMessageHandler(Context context) throws JsonProcessingException {
@@ -93,7 +105,7 @@ public class SocialMediaController {
         if(updatedMessage == null) {
             context.status(400);
         } else {
-            context.json(mapper.writeValueAsString(updatedMessage));
+            context.status(200).json(mapper.writeValueAsString(updatedMessage));
         }
     }
 }

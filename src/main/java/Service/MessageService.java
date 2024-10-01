@@ -17,7 +17,7 @@ public class MessageService {
     }
 
     public Message addMessage(Message message){
-        if(messageDAO.getMessageById(message.getMessage_id()) != null){
+        if(messageDAO.getMessageById(message.getMessage_id()) != null || message.message_text == ""){
             return null;
         }
         else {
@@ -38,10 +38,13 @@ public class MessageService {
     }
 
     public Message updateMessage(int message_id, Message message){
-        if(messageDAO.getMessageById(message_id) == null){
+        Message updatedMessage = messageDAO.getMessageById(message_id);
+        if(updatedMessage == null){
             return null;
         } 
+        
         messageDAO.updateMessage(message_id,message);
         return messageDAO.getMessageById(message_id);
+     
     }
 }
