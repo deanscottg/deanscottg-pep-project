@@ -15,18 +15,17 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        if(account.username == null || account.password.length() < 4 || account.username.length() == 0){
+        Account checkedAccount = accountDAO.getAccountByUserName(account.getUsername());
+        if(checkedAccount != null || account.password.length() < 4 || account.password.length() > 255 || account.username.length() < 1){
             return null;
         }
         else {
             Account addedAccount = accountDAO.insertAccount(account);
             return addedAccount;
         }
-        // if(account.username != null && account.password.length() >= 4){
-        //     Account addedAccount = accountDAO.insertAccount(account);
-        // return addedAccount;
-        // }
-        // else return null;
-        
+   
     }
+    public Account verifyAccount(Account account){
+        return accountDAO.verifyAccount(account);
+    } 
 }

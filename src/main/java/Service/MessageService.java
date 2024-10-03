@@ -34,17 +34,26 @@ public class MessageService {
 
     public Message getMessageById(int id){
         Message fetchedMessage = messageDAO.getMessageById(id);
-        return fetchedMessage;
+        if(fetchedMessage != null){
+            return fetchedMessage;
+        } 
+        return null;
+        
     }
 
-    public Message updateMessage(int message_id, Message message){
-        Message updatedMessage = messageDAO.getMessageById(message_id);
-        if(updatedMessage == null){
-            return null;
-        } 
-        
-        messageDAO.updateMessage(message_id,message);
-        return messageDAO.getMessageById(message_id);
+    public Message updateMessage(Message message){
+        Message updatedMessage = messageDAO.updateMessage(message);
+        if(updatedMessage != null) return updatedMessage; 
+        return null;  
      
+    }
+    public Message deleteMessage(int message_id){
+        Message deletedMessage = messageDAO.getMessageById(message_id);
+        if(deletedMessage == null){
+            return null;
+        }
+        else {
+            return messageDAO.deleteMessageById(message_id);
+        }
     }
 }
