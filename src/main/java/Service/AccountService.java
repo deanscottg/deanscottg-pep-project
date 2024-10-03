@@ -20,10 +20,8 @@ public class AccountService {
             return null;
         }
         else {
-            Account addedAccount = accountDAO.insertAccount(account);
-            return addedAccount;
+            return accountDAO.insertAccount(account);
         }
-   
     }
     public Account verifyAccount(Account account){
         return accountDAO.verifyAccount(account);

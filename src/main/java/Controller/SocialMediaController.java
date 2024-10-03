@@ -2,7 +2,6 @@ package Controller;
 
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,7 +43,6 @@ public class SocialMediaController {
         app.get("/accounts/{account_id}/messages", this::getMessagesByAccountHandler);
         // app.start(8080);
 
-
         return app;
     }
 
@@ -61,8 +59,7 @@ public class SocialMediaController {
         }
         else{
             context.status(400);
-        }
-        
+        }   
     }
     private void postVerifyAccountHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -71,10 +68,9 @@ public class SocialMediaController {
         if(addedAccount != null){
             context.status(200).json(mapper.writeValueAsString(addedAccount));
         }
-        else{
+        else {
             context.status(401);
         }
-        
     }
 
     private void postMessageHandler(Context context) throws JsonProcessingException {
@@ -83,7 +79,8 @@ public class SocialMediaController {
         Message persistedMessage = messageService.addMessage(message);
             if(persistedMessage!= null){
                 context.status(200).json(mapper.writeValueAsString(persistedMessage));
-            } else {
+            } 
+            else {
                 context.status(400);
             }
     }
@@ -108,10 +105,12 @@ public class SocialMediaController {
         Message updatedMessage = messageService.updateMessage(message);
         if(updatedMessage == null) {
             context.status(400);
-        } else {
+        } 
+        else {
             context.status(200).json(mapper.writeValueAsString(updatedMessage));
         }
     }
+
     private void deleteMessageByIdHandler(Context context){
         
         int message_id = Integer.parseInt(context.pathParam("message_id"));
@@ -122,6 +121,7 @@ public class SocialMediaController {
                 context.json(messageService.deleteMessage(message_id));
             }
     }
+    
     private void getMessagesByAccountHandler(Context context){
         int account_id = Integer.parseInt(context.pathParam("account_id"));
         List<Message> messages = messageService.getAllMessagesByAccount(account_id);

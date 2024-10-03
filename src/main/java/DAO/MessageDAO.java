@@ -50,9 +50,6 @@ public class MessageDAO {
         return messages;
     }
 
-
-
-
     public Message insertMessage(Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -75,21 +72,7 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
         return null;
-
     }
-
-    // public void updateMessage(int id, Message message){
-    //     Connection connection = ConnectionUtil.getConnection();
-    //     try {
-    //         String sql = "UPDATE Message SET message_text = ? WHERE message_id = ?;";
-    //         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-    //         preparedStatement.setString(1,message.getMessage_text());
-    //         preparedStatement.executeUpdate();
-    //     } catch(SQLException e){
-    //         System.out.println(e.getMessage());
-    //     }
-
-    // }
 
     public Message updateMessage(Message message){
         Connection connection = ConnectionUtil.getConnection();
@@ -130,7 +113,6 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
         return null;
-
     }
 
     public List<Message> getAllMessagesByAccount(int account_id) {
@@ -152,6 +134,5 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
         return messages;
-
     }
 }
