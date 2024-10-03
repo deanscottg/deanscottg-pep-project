@@ -24,7 +24,6 @@ public class MessageService {
             Message persistedMessage = messageDAO.insertMessage(message);
             return persistedMessage;
         }
-        
     }
 
     public List<Message> getAllMessages(){
@@ -38,7 +37,6 @@ public class MessageService {
             return fetchedMessage;
         } 
         return null;
-        
     }
 
     public Message updateMessage(Message message){
@@ -47,13 +45,16 @@ public class MessageService {
         return null;  
      
     }
-    public Message deleteMessage(int message_id){
-        Message deletedMessage = messageDAO.getMessageById(message_id);
-        if(deletedMessage == null){
+    public Message deleteMessage(int id){
+        Message deletedMessage = messageDAO.getMessageById(id);
+        if(deletedMessage != null){
+            return deletedMessage;
+        }
             return null;
-        }
-        else {
-            return messageDAO.deleteMessageById(message_id);
-        }
+    }
+
+    public List<Message> getAllMessagesByAccount(int account_id) {
+        List<Message> messageByUserList = messageDAO.getAllMessagesByAccount(account_id);
+        return messageByUserList;
     }
 }

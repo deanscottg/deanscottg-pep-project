@@ -41,7 +41,7 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
         app.patch("/messages/{message_id}", this::updateMessageHandler);
-        // app.get("/accounts/{account_id}/messages", this::exampleHandler);
+        app.get("/accounts/{account_id}/messages", this::getMessagesByAccountHandler);
         // app.start(8080);
 
 
@@ -96,9 +96,11 @@ public class SocialMediaController {
     private void getMessageByIdHandler(Context context){
         Message fetchedMessage = messageService.getMessageById(Integer.parseInt(context.pathParam("message_id")));
         if(fetchedMessage != null){
+            System.out.println("msg test " + fetchedMessage);
             context.status(200).json(fetchedMessage);
         }
         else {
+            System.out.println("dingus");
             context.status(400);
         }
     }
@@ -124,5 +126,11 @@ public class SocialMediaController {
             else {
                 context.json(messageService.deleteMessage(message_id));
             }
+    }
+    private void getMessagesByAccountHandler(Context context){
+        int account_id = Integer.parseInt(context.pathParam("account_id"));
+        List<Message> messages = messageService.getAllMessagesByAccount(account_id);
+        
+        if(messages != null || messages.isEmpty()) context.status(200).json(messages);
     }
 }
