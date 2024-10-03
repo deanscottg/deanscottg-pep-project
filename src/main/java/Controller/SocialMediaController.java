@@ -96,12 +96,7 @@ public class SocialMediaController {
     private void getMessageByIdHandler(Context context){
         Message fetchedMessage = messageService.getMessageById(Integer.parseInt(context.pathParam("message_id")));
         if(fetchedMessage != null){
-            System.out.println("msg test " + fetchedMessage);
             context.status(200).json(fetchedMessage);
-        }
-        else {
-            System.out.println("dingus");
-            context.status(400);
         }
     }
 
