@@ -146,12 +146,12 @@ public class MessageDAO {
                 resultSet.getString("message_text"),
                 resultSet.getLong("time_posted_epoch"));
                 messages.add(message);
-                return messages;
+                
             }
         } catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return null;
+        return messages;
 
     }
 }
